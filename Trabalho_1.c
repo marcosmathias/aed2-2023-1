@@ -9,7 +9,7 @@ typedef struct filme{
     char titulo[50];
 } Filme;
 
-// Estrutura para armazenar um nó da árvore binária
+// Estrutura para armazenar um no da arvore binaria
 typedef struct no{
     Filme dado;
     struct no *esq;
@@ -24,7 +24,7 @@ No *criar_no(Filme f){
     return novo;
 }
 
-// Função para inserir nó
+// Funcao para inserir no
 
 void inserir_no(No **raiz, No *novo){
     if (*raiz == NULL){
@@ -43,13 +43,13 @@ void inserir_no(No **raiz, No *novo){
     }
 }
 
-// Função para calcular a altura de um nó
+// Funcao para calcular a altura de um no
 int altura_no(No *no){
     if (no == NULL)
         return 0;
     int altura_esq = altura_no(no->esq);
     int altura_dir = altura_no(no->dir);
-    
+
     if (altura_esq > altura_dir) {
         return 1 + altura_esq;
     } else {
@@ -57,7 +57,7 @@ int altura_no(No *no){
     };
 }
 
-// Função para calcular o fator de balanceamento de um nó
+// Funcao para calcular o fator de balanceamento de um no
 int fator_balanceamento(No *no){
     if (no == NULL)
         return 0;
@@ -66,7 +66,7 @@ int fator_balanceamento(No *no){
     return altura_esq - altura_dir;
 }
 
-// Função para fazer uma rotação simples à direita
+// Funcao para fazer uma rotacao simples ÀÜ direita
 No *rotacao_simples_direita(No *raiz){
     No *nova_raiz = raiz->esq;
     raiz->esq = nova_raiz->dir;
@@ -74,7 +74,7 @@ No *rotacao_simples_direita(No *raiz){
     return nova_raiz;
 }
 
-// Função para fazer uma rotação simples à esquerda
+// Funcao para fazer uma rotacao simples ÀÜ esquerda
 No *rotacao_simples_esquerda(No *raiz){
     No *nova_raiz = raiz->dir;
     raiz->dir = nova_raiz->esq;
@@ -82,28 +82,28 @@ No *rotacao_simples_esquerda(No *raiz){
     return nova_raiz;
 }
 
-// Função para fazer uma rotação dupla à direita
+// Funcao para fazer uma rotacao dupla ÀÜ direita
 No *rotacao_dupla_direita(No *raiz){
     raiz->esq = rotacao_simples_esquerda(raiz->esq);
     return rotacao_simples_direita(raiz);
 }
 
-// Função para fazer uma rotação dupla à esquerda
+// Funcao para fazer uma rotacao dupla ÀÜ esquerda
 No *rotacao_dupla_esquerda(No *raiz){
     raiz->dir = rotacao_simples_direita(raiz->dir);
     return rotacao_simples_esquerda(raiz);
 }
 
-// Função para balancear um nó da árvore
+// Funcao para balancear um no da arvore
 No *balancear_no(No *no){
     int fb = fator_balanceamento(no);
-    if (fb > 1){ // Subárvore esquerda pesada
+    if (fb > 1){ // Sub‚Ä°rvore esquerda pesada
         if (fator_balanceamento(no->esq) > 0) // Caso LL
             no = rotacao_simples_direita(no);
         else // Caso LR
             no = rotacao_dupla_direita(no);
     }
-    else if (fb < -1){ // Subárvore direita pesada
+    else if (fb < -1){ // Sub‚Ä°rvore direita pesada
         if (fator_balanceamento(no->dir) < 0) // Caso RR
             no = rotacao_simples_esquerda(no);
         else // Caso RL
@@ -112,7 +112,7 @@ No *balancear_no(No *no){
     return no;
 }
 
-// Função para balancear a árvore binária utilizando o método AVL
+// Funcao para balancear a arvore binaria utilizando o metodo AVL
 No *balancear_arvore(No *raiz){
     if (raiz == NULL)
         return NULL;
@@ -121,23 +121,23 @@ No *balancear_arvore(No *raiz){
     return balancear_no(raiz);
 }
 
-// Função para buscar filme por ano com mais de um resultado
+// Funcao para buscar filme por ano com mais de um resultado
 No **buscar_filme_ano(No *raiz, int ano, No **resultados, int *n){
     if (raiz == NULL){
         return NULL;
     }
     else if (raiz->dado.ano == ano){
-        resultados[*n] = raiz; // adiciona o nó ao vetor de resultados
+        resultados[*n] = raiz; // adiciona o no ao vetor de resultados
         (*n)++; // incrementa o contador de resultados
     }
-    buscar_filme_ano(raiz->esq, ano, resultados, n); // busca na subárvore esquerda
-    buscar_filme_ano(raiz->dir, ano, resultados, n); // busca na subárvore direita
+    buscar_filme_ano(raiz->esq, ano, resultados, n); // busca na sub‚Ä°rvore esquerda
+    buscar_filme_ano(raiz->dir, ano, resultados, n); // busca na sub‚Ä°rvore direita
     return NULL;
 }
 
 
 
-// Função para buscar um filme pelo gênero
+// Funcao para buscar um filme pelo genero
 No *buscar_filme_genero(No *raiz, char *genero){
     No *lista = NULL;
     if (raiz != NULL){
@@ -151,7 +151,7 @@ No *buscar_filme_genero(No *raiz, char *genero){
     return lista;
 }
 
-// Função para buscar um filme pelo título
+// Funcao para buscar um filme pelo titulo
 No *buscar_filme_titulo(No *raiz, char *titulo){
     if (raiz == NULL){
         return NULL;
@@ -174,14 +174,14 @@ No *buscar_filme_titulo(No *raiz, char *titulo){
     }
 }
 
-// Função para imprimir os dados de um filme
+// Funcao para imprimir os dados de um filme
 void imprimir_filme(Filme f){
     printf("Ano: %d\n", f.ano);
     printf("Genero: %s\n", f.genero);
     printf("Titulo: %s\n", f.titulo);
 }
 
-// Função para imprimir a árvore binária em ordem crescente de ano
+// Funcao para imprimir a arvore binaria em ordem crescente de ano
 void imprimir_arvore(No *raiz){
     if (raiz != NULL){
         imprimir_arvore(raiz->esq);
@@ -191,7 +191,7 @@ void imprimir_arvore(No *raiz){
     }
 }
 
-// Função para imprimir uma lista de filmes
+// Funcao para imprimir uma lista de filmes
 void imprimir_lista(No *lista){
     No *aux = lista;
     while (aux != NULL){
@@ -201,7 +201,7 @@ void imprimir_lista(No *lista){
     }
 }
 
-// Função para liberar a memória da lista de filmes
+// Funcao para liberar a mem‚Äîria da lista de filmes
 void liberar_lista(No **lista){
      No *aux = *lista;
      while (aux != NULL){
@@ -212,7 +212,7 @@ void liberar_lista(No **lista){
      *lista = NULL;
 }
 
-// Função para liberar a memória da árvore binária
+// Funcao para liberar a mem‚Äîria da ‚Ä°rvore bin‚Ä°ria
 void liberar_arvore(No **raiz){
      if (*raiz != NULL){
          liberar_arvore(&(*raiz)->esq);
@@ -222,19 +222,17 @@ void liberar_arvore(No **raiz){
     }
 }
 
-// Função para ler o arquivo de testes
+// Funcao para ler o arquivo de testes
 Filme ler_filme(FILE *arq){
     Filme f;
     f.ano = -1;
     if (arq != NULL){
-        fscanf(arq, "%d", &f.ano);
-        fscanf(arq, "%s", f.genero);
-        fscanf(arq, "%[^\n]s", f.titulo);
+        fscanf(arq, "%d_%[^_]_%[^\n]s", &f.ano, f.genero, f.titulo);
     }
     return f;
 }
 
-// Função para carregar uma árvore binária a partir de um arquivo de casos de teste
+// Funcao para carregar uma ‚Ä°rvore bin‚Ä°ria a partir de um arquivo de casos de teste
 // formato: ano genero titulo\n
 void carregar_arvore(No **raiz, char *nome_arquivo){
     FILE *arq = fopen(nome_arquivo, "r");
@@ -253,7 +251,7 @@ void carregar_arvore(No **raiz, char *nome_arquivo){
 
 
 
-// Função de menu
+// Funcao de menu
 void exibir_menu(){
     printf("Escolha uma opcao:\n");
     printf("1 - Buscar filme por ano\n");
@@ -265,10 +263,8 @@ void exibir_menu(){
     printf("7 - Sair do programa\n");
 }
 
-// Função main
+// Funcao main
 int main(){
-
-    setlocale(LC_ALL, "Portuguese_Brazil");
 
     No *raiz = NULL;
 
@@ -295,7 +291,7 @@ int main(){
                     printf("\nFilme nao encontrado.\n");
                 break;
             }
-            case 2:{ // buscar filme por gênero
+            case 2:{ // buscar filme por genero
                 char genero[20];
                 printf("\nDigite o genero do filme que deseja buscar: ");
                 scanf("%s", genero);
@@ -310,7 +306,7 @@ int main(){
                 }
                 break;
             }
-            case 3:{ // buscar filme por título
+            case 3:{ // buscar filme por titulo
                 char titulo[50];
                 printf("\nDigite o titulo do filme que deseja buscar: ");
                 scanf("%[^\n]s", titulo);
@@ -329,23 +325,23 @@ int main(){
                 printf("\nDigite o nome do arquivo de casos de teste: ");
                 scanf("%s", nome_arquivo);
                 carregar_arvore(&raiz, nome_arquivo);
-            printf("\nÁrvore carregada com sucesso.\n");
-            printf("Altura da árvore: %d\n", altura_no(raiz));
+            printf("\nArvore carregada com sucesso.\n");
+            printf("Altura da arvore: %d\n", altura_no(raiz));
                 break;
             }
-            case 5:{  // imprimir a árvore binária em ordem de ano
+            case 5:{  // imprimir a arvore bin‚Ä°ria em ordem de ano
                 imprimir_arvore(raiz);
                 break;
             }
-            case 6:{  // balancear árvore utilizando o método AVL
-            printf("\nAltura da árvore antes do balanceamento: %d\n", altura_no(raiz));
+            case 6:{  // balancear arvore utilizando o metodo AVL
+            printf("\nAltura da arvore antes do balanceamento: %d\n", altura_no(raiz));
             raiz = balancear_arvore(raiz);
-            printf("\nÁrvore balanceada com sucesso.\n");
-            printf("\nAltura da árvore após o balanceamento: %d\n", altura_no(raiz));
+            printf("\nArvore balanceada com sucesso.\n");
+            printf("\nAltura da arvore apos o balanceamento: %d\n", altura_no(raiz));
             break;
             }
             case 7:{  // sair
-                liberar_arvore(&raiz);  // libera a memória da árvore binária
+                liberar_arvore(&raiz);  // libera a memoria da ‚Ä°rvore bin‚Ä°ria
                 break;
             }
         }
