@@ -5,8 +5,8 @@
 
 typedef struct filme{
     int ano;
-    char genero[20];
-    char titulo[50];
+    char genero[30];
+    char titulo[150];
 } Filme;
 
 // Estrutura para armazenar um no da arvore binaria
@@ -139,17 +139,17 @@ No **buscar_filme_ano(No *raiz, int ano, No **resultados, int *n){
 
 
 // Funcao para buscar um filme pelo genero
-No *buscar_filme_genero(No *raiz, char *genero){
-    No *lista = NULL;
-    if (raiz != NULL){
-        lista = buscar_filme_genero(raiz->esq, genero);
-        if (strcmp(raiz->dado.genero, genero) == 0){
-            raiz->esq = lista;
-            lista = raiz;
-        }
-        lista = buscar_filme_genero(raiz->dir, genero);
+No *buscar_filme_genero(No *raiz, char *genero, No **resultados, int *n){
+    if (raiz == NULL){
+        return NULL;
     }
-    return lista;
+    else if (strcmp(raiz->dado.genero, genero) == 0){
+        resultados[*n] = raiz; // adiciona o no ao vetor de resultados
+        (*n)++; // incrementa o contador de resultados
+    }
+    buscar_filme_genero(raiz->esq, genero, resultados, n); // busca na subarvore esquerda
+    buscar_filme_genero(raiz->dir, genero, resultados, n); // busca na subarvore direita
+    return NULL;
 }
 
 // Funcao para buscar um filme pelo titulo
@@ -180,6 +180,7 @@ void imprimir_filme(Filme f){
     printf("Ano: %d\n", f.ano);
     printf("Genero: %s\n", f.genero);
     printf("Titulo: %s\n", f.titulo);
+    printf("\n");
 }
 
 // Funcao para imprimir a arvore binaria em ordem crescente de ano
@@ -202,7 +203,7 @@ void imprimir_lista(No *lista){
     }
 }
 
-// Funcao para liberar a memÑria da lista de filmes
+// Funcao para liberar a memï¿½ria da lista de filmes
 void liberar_lista(No **lista){
      No *aux = *lista;
      while (aux != NULL){
@@ -213,7 +214,7 @@ void liberar_lista(No **lista){
      *lista = NULL;
 }
 
-// Funcao para liberar a memÑria da arvore binaria
+// Funcao para liberar a memï¿½ria da arvore binaria
 void liberar_arvore(No **raiz){
      if (*raiz != NULL){
          liberar_arvore(&(*raiz)->esq);
@@ -223,7 +224,7 @@ void liberar_arvore(No **raiz){
     }
 }
 
-// Funcao para inserir um filme manualmente na arvore 
+// Funcao para inserir um filme manualmente na arvore
 
  void inserir_filme(No **raiz) {
     Filme f;
@@ -240,7 +241,7 @@ void liberar_arvore(No **raiz){
     printf("\nFilme inserido com sucesso.\n");
 }
 
-// Funcao para remover um filme manualmente da arvore 
+// Funcao para remover um filme manualmente da arvore
 
 No* remover_filme(No* raiz, char* titulo) {
     if (raiz == NULL) {
@@ -327,7 +328,7 @@ int main(){
         exibir_menu();
         scanf("%d", &opcao);
         switch (opcao){
-            case 1: { // Inserir filme na biblioteca 
+            case 1: { // Inserir filme na biblioteca
                 inserir_filme(&raiz);
                 break;
             }
@@ -344,7 +345,7 @@ int main(){
                 int ano;
                 printf("\nDigite o ano do filme que deseja buscar: ");
                 scanf("%d", &ano);
-                No *resultados[100];
+                No *resultados[1000];
                 int n = 0;
                 buscar_filme_ano(raiz, ano, resultados, &n);
                 if (n > 0){
@@ -361,19 +362,21 @@ int main(){
                 char genero[20];
                 printf("\nDigite o genero do filme que deseja buscar: ");
                 scanf(" %[^\n]s", genero);
-                No *lista = buscar_filme_genero(raiz, genero);
-                if (lista != NULL){
+               No *resultados[10000];
+                int n = 0;
+                buscar_filme_genero(raiz, genero, resultados, &n);
+                if (n > 0){
                     printf("\nFilmes encontrados:\n");
-                    imprimir_lista(lista);
-                    liberar_lista(&lista);
+                    for (int i = 0; i < n; i++) {
+                        imprimir_filme(resultados[i]->dado);
+                    }
                 }
-                else{
-                    printf("\nNenhum filme encontrado.\n");
-                }
+                else
+                    printf("\nFilme nao encontrado.\n");
                 break;
             }
             case 5:{ // Buscar filme por titulo
-                char titulo[50];
+                char titulo[150];
                 printf("\nDigite o titulo do filme que deseja buscar: ");
                 scanf(" %[^\n]s", titulo);
                 No *busca = buscar_filme_titulo(raiz, titulo);
