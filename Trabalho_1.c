@@ -285,7 +285,7 @@ Filme ler_filme(FILE *arq){
 }
 
 // Funcao para carregar uma arvore binaria a partir de um arquivo de casos de teste
-// formato: ano genero titulo\n
+// formato: ano_genero_titulo\n
 void carregar_arvore(No **raiz, char *nome_arquivo){
     FILE *arq = fopen(nome_arquivo, "r");
     if (arq == NULL){
