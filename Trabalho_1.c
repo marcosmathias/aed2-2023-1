@@ -285,7 +285,7 @@ Filme ler_filme(FILE *arq){
 }
 
 // Funcao para carregar uma arvore binaria a partir de um arquivo de casos de teste
-// formato: ano_genero_titulo\n
+// formato: ano genero titulo\n
 void carregar_arvore(No **raiz, char *nome_arquivo){
     FILE *arq = fopen(nome_arquivo, "r");
     if (arq == NULL){
@@ -404,7 +404,13 @@ int main(){
             }
             case 8:{  // Balancear arvore utilizando o metodo AVL
             printf("\nAltura da arvore antes do balanceamento: %d\n", altura_no(raiz));
+            int altura1, altura2;
+            do {
+            altura1=altura_no(raiz);
             raiz = balancear_arvore(raiz);
+            altura2=altura_no(raiz);
+            } while (altura1!=altura2);
+
             printf("\nArvore balanceada com sucesso.\n");
             printf("\nAltura da arvore apos o balanceamento: %d\n", altura_no(raiz));
             break;
